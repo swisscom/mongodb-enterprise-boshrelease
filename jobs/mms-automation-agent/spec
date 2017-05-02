@@ -32,6 +32,7 @@ properties:
     description: MongoEnterprise Ops Manager URL
   mms-automation-agent.version:
     description: Automation Agent version to download from Opsmanager.
+    default: latest
 
   mms-automation-agent.http_proxy:
     description: URL to proxy all HTTP requests through
