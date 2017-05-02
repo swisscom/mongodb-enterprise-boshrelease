@@ -45,6 +45,6 @@ By default the version number will be bumped to the next major number. You can s
 
 
 ```
-bosh create release --final --version 1.0.0
+bosh create release --final --version 1.0.0 --with-tarball
 ```
 
