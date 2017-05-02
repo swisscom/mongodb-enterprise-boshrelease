@@ -1,0 +1,65 @@
+---
+name: mms-automation-agent
+
+packages:
+- net-snmp
+- ruby
+
+templates:
+  bin/mms-automation-agent_ctl: bin/mms-automation-agent_ctl
+  bin/monit_debugger: bin/monit_debugger
+  bin/set_fqdn: bin/set_fqdn
+  bin/register_consul_service: bin/register_consul_service
+  bin/drain: bin/drain
+  bin/drain.rb: bin/drain.rb
+  config/automation-agent.config.erb: config/automation-agent.config
+  config/mms-cert.pem: config/mms-cert.pem
+  config/ca-cert.pem: config/ca-cert.pem
+  config/client.pem: /config/client.pem
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+
+properties:
+  mms-automation-agent.service_id:
+    description: ServiceID / Name of this mongodb node set
+  mms-automation-agent.mmsGroupId:
+    description: MongoEnterprise Automation Agent Group ID
+  mms-automation-agent.mmsApiKey:
+    description: MongoEnterprise Automation Agent API Key
+  mms-automation-agent.mmsBaseUrl:
+    description: MongoEnterprise Ops Manager URL
+  mms-automation-agent.version:
+    description: Automation Agent version to download from Opsmanager.
+
+  mms-automation-agent.http_proxy:
+    description: URL to proxy all HTTP requests through
+
+  mms-automation-agent.log_level:
+    description: The level of logging granularity (DEBUG, ROUTINE, INFO, WARN, ERROR, DOOM)
+    default: INFO
+
+  mms-automation-agent.ssl.mms_certificate:
+    description: Trusted certificate authority certificates in PEM format.
+  mms-automation-agent.ssl.verify_mms_certificate:
+    description: Use this option to disable certificate verification by setting this value to false
+  mms-automation-agent.ssl.ca_cert:
+    description: CA-Certificate in PEM format.
+  mms-automation-agent.ssl.client_cert:
+    description: Client Key and Cert in PEM format.
+
+  mongodb.health.user:
+    description: Pre-provisioned user that is allowed to access rs.status() over the mongo cli.
+  mongodb.health.password:
+    description: Password for the pre-provisioned user.
+  mongodb.port:
+    desctiption: Port of mongodb instance.
+    default: 27017
+  mongodb.bin_path:
+    description: Path to mongo cli binary.
+    default: /var/vcap/store/mms-automation-agent/bin/
+
+  mongodb.tuning:
+    description: enable mongodb kernel tuning
+    default: true

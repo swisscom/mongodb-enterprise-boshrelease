@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set +e
+
+# Set fqdn as service_id+index
+export fqdn="<%= p("mms-automation-agent.service_id") %>-<%= spec.index %>.service.consul"
+grep -q "${fqdn}" /etc/hosts
+if [ $? -eq 1 ]; then
+  sed -i "s/\(.*\) localhost \(.*\)/\1 ${fqdn} localhost \2/" /etc/hosts
+fi
+
+# Check if fqdn matches what we want
+if [ "$(hostname -f)" = "${fqdn}" ]; then
+  echo "hostname matches: ${fqdn}"
+  exit 0
+else
+  echo "hostname mismatch, expected ${fqdn}"
+  echo "check /etc/hosts"
+  exit 1
+fi
+
+set -e

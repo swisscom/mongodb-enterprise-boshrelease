@@ -1,0 +1,66 @@
+#
+# REQUIRED
+# Enter your Group ID - It can be found at https://cloud.mongodb.com/settings/group
+#
+mmsGroupId=<%= p("mms-automation-agent.mmsGroupId") %>
+
+#
+# REQUIRED
+# Enter your API key - It can be found at https://cloud.mongodb.com/settings/group
+#
+mmsApiKey=<%= p("mms-automation-agent.mmsApiKey") %>
+
+
+#
+# Base url of the MMS web server.
+#
+mmsBaseUrl=<%= p("mms-automation-agent.mmsBaseUrl") %>
+
+#
+# Path to log file
+#
+logFile=/var/vcap/sys/log/mms-automation-agent/mms-automation-agent.log
+
+#
+# Path to backup cluster config to
+#
+mmsConfigBackup=/var/vcap/store/mms-automation-agent/mms-cluster-config-backup.json
+
+#
+# Lowest log level to log.  Can be (in order): DEBUG, ROUTINE, INFO, WARN, ERROR, DOOM
+#
+logLevel=<%= p("mms-automation-agent.log_level") %>
+
+#
+# Maximum number of rotated log files
+#
+maxLogFiles=10
+
+#
+# Maximum size in bytes of a log file (before rotating)
+#
+maxLogFileSize=268435456
+
+#
+# URL to proxy all HTTP requests through
+#
+#
+<% if_p("mms-automation-agent.http_proxy") do %>
+httpProxy=<%= p("mms-automation-agent.http_proxy") %>
+<% end %>
+
+<% if_p("mms-automation-agent.krb5ConfigLocation") do %>
+krb5ConfigLocation=<%= p("mms-automation-agent.krb5ConfigLocation") %>
+<% end %>
+
+<% if_p("mms-automation-agent.ssl.mms_certificate") do %>
+sslTrustedMMSServerCertificate=/var/vcap/jobs/mms-automation-agent/config/mms-cert.pem
+<% end %>
+
+<% if_p("mms-automation-agent.ssl.verify_mms_certificate") do %>
+sslRequireValidMMSServerCertificates=<%= p("mms-automation-agent.ssl.verify_mms_certificate") %>
+<% end %>
+
+# For additional optional settings, please see
+# https://docs.cloud.mongodb.com/reference/automation-agent/
+

@@ -1,0 +1,107 @@
+---
+
+name: mongodb-enterprise_db
+
+director_uuid: <%= `bosh status --uuid` %>
+
+releases:
+- name: mongodb-enterprise
+  version: latest
+- name: consul
+  version: latest
+
+compilation:
+  cloud_properties: {}
+  network: mongodb-enterprise-network
+  reuse_compilation_vms: true
+  workers: 5
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 10000-200000
+  update_watch_time: 10000-200000
+  serial: true
+
+disk_pools:
+- cloud_properties: {}
+  disk_size: 5120
+  name: mongodb-enterprise-persistent-disk
+
+resource_pools:
+- cloud_properties: {}
+  name: consul
+  network: mongodb-enterprise-network
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties: {}
+  name: mongodb-enterprise
+  network: mongodb-enterprise-network
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+
+
+networks:
+- name: mongodb-enterprise-network
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.244.13.0/24
+    reserved:
+    - 10.244.13.1
+    static:
+    - 10.244.13.2
+    - 10.244.13.3
+    - 10.244.13.4
+    - 10.244.13.8
+  type: manual
+
+instance_groups:
+- name: mongodb-enterprise
+  instances: 3
+  jobs:
+  - name: mms-automation-agent
+    properties:
+      mms-automation-agent:
+        mmsApiKey: 571a7c32773d5e72443bce1cdef373bb
+        mmsBaseUrl: http://10.244.13.8:8080
+        mmsGroupId: 59072c31ca6e4128985bf9f1
+        service_id: abctestmongoservice
+        version: 3.2.11.2025-1
+      mongodb:
+        tuning: false
+        port: 27017
+        health:
+          user: admin
+          password: admin
+        bin_path: /var/vcap/store/mms-automation-agent/bin/
+    release: mongodb-enterprise
+  - name: consul
+    release: consul
+    provides:
+      consul_servers:
+        as: consul-service
+    consumes:
+      consul_servers:
+        from: consul-service
+    properties:
+      consul:
+        server: false
+        encrypt: Sf0GBmBGvG05YDSQVRMvdg==
+        join_hosts: [10.244.13.15]
+        datacenter: warden-test-dc
+        acl_datacenter: warden-test-dc
+        acl_token: 6dce985b-05c4-47ca-9430-98741c976b11
+  networks:
+  - name: mongodb-enterprise-network
+    default:
+    - dns
+    - gateway
+  persistent_disk: 10240
+  resource_pool: mongodb-enterprise
+  update:
+    canaries: 1
+
+properties: {}

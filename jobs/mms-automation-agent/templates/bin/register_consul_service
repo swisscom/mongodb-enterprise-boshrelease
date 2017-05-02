@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set +e
+
+mkdir -p /var/vcap/data/consul
+
+cat >/var/vcap/data/consul/indexed-service-<%= p('mms-automation-agent.service_id') %>.json <<EOF
+<%=
+{
+  "service" => {
+    "name" => "#{p('mms-automation-agent.service_id').tr('_', '-')}-#{spec.index}",
+  }
+}.to_json
+%>
+EOF
+
+set -e

@@ -1,0 +1,83 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/mms-automation-agent/helpers/ctl_setup.sh 'mms-automation-agent'
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+    <% if p('mongodb.tuning') %>
+        # mongodb performance recommendations
+        echo never > /sys/kernel/mm/transparent_hugepage/enabled
+        echo never > /sys/kernel/mm/transparent_hugepage/defrag
+        echo 0 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+        ulimit -n 64000
+        ulimit -u 64000
+        ulimit -f unlimited
+        ulimit -t unlimited
+        ulimit -v unlimited
+        # disk read-ahead
+        STORAGE_DEVICE=$(df | grep '/var/vcap/store' | awk '{print $1;}')
+        blockdev --setra 32 ${STORAGE_DEVICE}
+        if [[ $(sysctl fs.file-max | awk '{print $3;}') -lt 98000 ]]; then 
+          sysctl -w fs.file-max=98000
+        fi
+        if [[ $(sysctl kernel.pid_max | awk '{print $3;}') -lt 64000 ]]; then 
+          sysctl -w kernel.pid_max=64000
+        fi
+        if [[ $(sysctl kernel.threads-max | awk '{print $3;}') -lt 64000 ]]; then 
+          sysctl -w kernel.threads-max=64000
+        fi
+        sysctl -w net.ipv4.tcp_keepalive_time=120
+    <% end %>
+
+    mkdir -p /var/vcap/store/mongodb-mms-automation || true
+    mkdir -p /var/vcap/store/mongodb-data || true
+    mkdir -p /var/vcap/store/mongodb-audit || true
+    chown vcap: /var/vcap/store/mongodb-mms-automation
+    chown vcap: /var/vcap/store/mongodb-data
+    chown vcap: /var/vcap/store/mongodb-audit
+    chmod 777 /var/vcap/store/mongodb-data
+    chmod 777 /var/vcap/store/mongodb-audit
+    chmod 775 /var/log
+
+    # add libsnmp path
+    echo "/var/vcap/packages/net-snmp/lib/" > /etc/ld.so.conf.d/net-snmp.conf
+    # load new config
+    /sbin/ldconfig
+
+    # set job + index as fqdn for ops manager registration
+    /var/vcap/jobs/mms-automation-agent/bin/set_fqdn
+    /var/vcap/jobs/mms-automation-agent/bin/register_consul_service
+
+    # workaround logpath for monitoring & backup agent
+    #if [ ! -h /var/log/mongodb-mms-automation ]; then
+    #  ln -s /var/vcap/sys/log/mms-automation-agent /var/log/mongodb-mms-automation
+    #fi
+
+    mkdir -p /var/vcap/data/mms-automation-agent/
+    curl -L <%= p('mms-automation-agent.mmsBaseUrl') %>/download/agent/automation/mongodb-mms-automation-agent-<%= p('mms-automation-agent.version') %>.linux_x86_64.tar.gz | tar xvz -C /var/vcap/data/mms-automation-agent/
+
+    cp /var/vcap/jobs/mms-automation-agent/config/automation-agent.config /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*/
+    exec chpst -u vcap:vcap /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*.linux_x86_64/mongodb-mms-automation-agent -f /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*.linux_x86_64/automation-agent.config -pidfilepath $PIDFILE -logFile $LOG_DIR/$JOB_NAME.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+    ;;
+  *)
+    echo "Usage: mms-automation-agent_ctl {start|stop}"
+
+    ;;
+
+esac
+
+exit 0

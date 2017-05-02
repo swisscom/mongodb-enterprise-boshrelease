@@ -1,0 +1,13 @@
+---
+net-snmp/net-snmp-5.7.3.tar.gz:
+  object_id: 09ae972e-555c-4f26-a2c0-568caec969ee
+  sha: 97dc25077257680815de44e34128d365c76bd839
+  size: 6382428
+perl/perl-5.22.2.tar.gz:
+  object_id: 8fde58c3-b9e7-46d5-93f0-a81cbc2a268b
+  sha: 2b84a711694be9a10e558c38c9aa43d86c7329a9
+  size: 15939581
+ruby/ruby-2.3.2.tar.gz:
+  object_id: 0a4a0090-ce8f-420a-b764-fe07b96ce4f8
+  sha: baef56b27941bfbfac6e2cd005b686d320c7f124
+  size: 17814200

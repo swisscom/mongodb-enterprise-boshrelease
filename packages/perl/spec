@@ -1,0 +1,6 @@
+---
+name: perl
+dependencies: []
+
+files:
+- perl/perl-5.22.2.tar.gz # perl: http://search.cpan.org/~shay/perl/pod/perldelta.pod

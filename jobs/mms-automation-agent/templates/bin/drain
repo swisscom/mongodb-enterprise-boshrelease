@@ -1,0 +1,31 @@
+#!/bin/bash
+# teardown existing mongod processes in order to free open files on the persistent volume
+
+exec 2>>"/var/vcap/sys/log/mms-automation-agent/drain.log"
+
+# Add all packages' /bin & /sbin into $PATH
+for package_bin_dir in $(ls -d /var/vcap/packages/*/*bin)
+do
+  export PATH=${package_bin_dir}:$PATH
+done
+
+export PATH=$PATH:<%= p('mongodb.bin_path') %>
+
+MONGOD_PROCS=`pgrep -f "mongod -f"`
+MONGOS_PROCS=`pgrep -f "mongos -f"`  
+if [ -n "$MONGOD_PROCS" ]; then
+
+  command -v mongo >/dev/null 2>&1 || { echo "mongo could not be found. please check mongodb.bin_path. Aborting." >&2; exit 1; }
+
+  ruby /var/vcap/jobs/mms-automation-agent/bin/drain.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/drain.log
+
+fi
+if [ -n "$MONGOS_PROCS" ]; then
+
+	 /var/vcap/bosh/bin/monit stop mms-automation-agent
+	 pkill mongo
+
+fi
+
+echo 0
+exit 0

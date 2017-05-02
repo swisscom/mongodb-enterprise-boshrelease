@@ -1,0 +1,10 @@
+check process mms-automation-agent
+  with pidfile /var/vcap/sys/run/mms-automation-agent/mms-automation-agent.pid
+  start program "/var/vcap/jobs/mms-automation-agent/bin/monit_debugger mms-automation-agent_ctl '/var/vcap/jobs/mms-automation-agent/bin/mms-automation-agent_ctl start'"
+  stop program "/var/vcap/jobs/mms-automation-agent/bin/monit_debugger mms-automation-agent_ctl '/var/vcap/jobs/mms-automation-agent/bin/mms-automation-agent_ctl stop'"
+  group vcap
+
+check file hosts with path /etc/hosts
+  if changed timestamp
+    then exec "/var/vcap/jobs/mms-automation-agent/bin/set_fqdn
+  end

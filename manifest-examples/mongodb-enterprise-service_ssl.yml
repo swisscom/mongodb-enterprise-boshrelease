@@ -1,0 +1,200 @@
+---
+
+name: mongodb-enterprise_db
+
+director_uuid: <%= `bosh status --uuid` %>
+
+releases:
+- name: mongodb-enterprise
+  version: latest
+- name: consul
+  version: latest
+
+compilation:
+  cloud_properties: {}
+  network: mongodb-enterprise-network
+  reuse_compilation_vms: true
+  workers: 5
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 10000-200000
+  update_watch_time: 10000-200000
+  serial: true
+
+disk_pools:
+- cloud_properties: {}
+  disk_size: 5120
+  name: mongodb-enterprise-persistent-disk
+
+resource_pools:
+- cloud_properties: {}
+  name: consul
+  network: mongodb-enterprise-network
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+- cloud_properties: {}
+  name: mongodb-enterprise
+  network: mongodb-enterprise-network
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+
+
+networks:
+- name: mongodb-enterprise-network
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.244.13.0/24
+    reserved:
+    - 10.244.13.1
+    static:
+    - 10.244.13.2
+    - 10.244.13.3
+    - 10.244.13.4
+    - 10.244.13.8
+  type: manual
+
+instance_groups:
+- name: mongodb-enterprise
+  instances: 3
+  jobs:
+  - name: mms-automation-agent
+    properties:
+      mms-automation-agent:
+        mmsApiKey: a405264f8348528f653438297727a47f
+        mmsBaseUrl: http://10.244.13.8:8080
+        mmsGroupId: 58c01b40560a48bf09bae524
+        service_id: abctestmongoservice
+        version: 3.2.11.2025-1
+        ssl:
+          TrustedMMSServerCertificate: |
+            -----BEGIN CERTIFICATE-----
+            MIIDQDCCAigCCQDP/loUgMPt8zANBgkqhkiG9w0BAQ0FADBUMQswCQYDVQQGEwJX
+            TzEOMAwGA1UECAwFV29ybGQxDjAMBgNVBAcMBVdvcmxkMRgwFgYDVQQKDA9Nb25n
+            b0VudGVycHJpc2UxCzAJBgNVBAsMAkNBMB4XDTE2MTEwODEyMzQzOFoXDTI3MTAy
+            MjEyMzQzOFowcDELMAkGA1UEBhMCV08xDjAMBgNVBAgMBVdvcmxkMRgwFgYDVQQK
+            DA9Nb25nb0VudGVycHJpc2UxEzARBgNVBAsMCk9wc21hbmFnZXIxIjAgBgNVBAMM
+            GW9wc21hbmFnZXIuc2VydmljZS5jb25zdWwwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+            DwAwggEKAoIBAQDTjWvfu9f6KGnZIhH/j8x4wy/O6FKDaV69SKZ53Jw23jgfgpfK
+            wtuypkUezttxcebx7UxScYXh4FPN65aB63lqLjyTBVSh1dDpdrCzEzv/vTCt8Zlh
+            t0G/kOQdwRrjFhfdInH0eKj5dUWAcbNI9pCttl2HZgavjV8lFBQfbJxaU1KRSa8y
+            fAEKni7aAghMXjp4AVKYhjmeoxDA6pU8TJrjfDZcIF4C/qK4eCxnLFMgnTABArAF
+            TjhgfDbliOWhwqTltruWeSy1GZeJhoNd2opvyd0RKE59zLqHykJ607Appjlc6+mc
+            IYyBj/tO2mMxKWt3YuE324DCPQRMxPtwoxJhAgMBAAEwDQYJKoZIhvcNAQENBQAD
+            ggEBAKQlRWjOXPiLZ4i3qA0AQYPTQX+4SI+QZuYdfrRB+maXxRuaDE+FY89EjkUr
+            OASL4BJT8i6fXCNKHSEvIDXgOOVofnCiUyAqvIzjKxV11kdocUhl2qeTZVB0Jf69
+            umnCS78vg9zCVniSzeRQ5NrkxBeN3L9A4udiXENXlPZdTxCm5uo0f/8NIjhJ+qfO
+            bM4KSdhbl4I+6U6a5uyzxLvyP+IAs92FvsEpL4T4myt5lsPm3ijc9Vd0wgZOJP1F
+            QfsJOnFLjuPlTGLG8TMWNUBuEdhabwtxUKYUJIXnDcLzkU+FvTE9cVzCfCeOF1cT
+            y3wZCGa6RREZCbXhWVw99ujOB+w=
+            -----END CERTIFICATE-----
+          verify_mms_certificate: true
+          ca_cert: |
+            -----BEGIN CERTIFICATE-----
+            MIIDezCCAmOgAwIBAgIJALVdgczzX5kwMA0GCSqGSIb3DQEBDQUAMFQxCzAJBgNV
+            BAYTAldPMQ4wDAYDVQQIDAVXb3JsZDEOMAwGA1UEBwwFV29ybGQxGDAWBgNVBAoM
+            D01vbmdvRW50ZXJwcmlzZTELMAkGA1UECwwCQ0EwHhcNMTYxMTA4MTIwNTI0WhcN
+            MjcxMDIyMTIwNTI0WjBUMQswCQYDVQQGEwJXTzEOMAwGA1UECAwFV29ybGQxDjAM
+            BgNVBAcMBVdvcmxkMRgwFgYDVQQKDA9Nb25nb0VudGVycHJpc2UxCzAJBgNVBAsM
+            AkNBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuQqfG4uo7kHvyrx9
+            O32vRuBVwnCqv9WDmdOAiTxVyfvfrtRS8SWTJWh06VLBUmTQgZ+bX4RIPtwsoaKv
+            aAQX6uLsG2s+4yEY6ucd+z0k0axKMvxbPxyZdtXRM3D6bAlIg3aAUJODWnPimKgd
+            eCdbJdvrakNEEnlbu5kcRqgJ/oeJWD7/aD60vBZGa6t4C15swjS6CfY9gBLjQuET
+            7TpscXeKDkAQZ8Sse7AoA/+P7q8iLQQ2IlHgU6rLwxvQiBRqYVFcMe5zyD1gDLgv
+            JWw0UxAhmxIjYE0XYF8CiFwI4TRpzFzUPs7D8FomY9+cPEEEHD3+PaeHY8hVlBsy
+            778OMwIDAQABo1AwTjAdBgNVHQ4EFgQUqjT5fh7cKG/wYGrBQXZoNlmwjhwwHwYD
+            VR0jBBgwFoAUqjT5fh7cKG/wYGrBQXZoNlmwjhwwDAYDVR0TBAUwAwEB/zANBgkq
+            hkiG9w0BAQ0FAAOCAQEATHY5U3u5LWOAzUJWduVDQNkH+S43MDlOQInxmKBDw1vW
+            3WpvkQjIQGYdYhW683VPdPQgz4ArpN1Sy4HcmLwbKWbIAw+yaQ9Df/UgBDkwOXF1
+            i+YNdgAqZaZPrN3kLvpYggUDjMiX+axKeDRJYalFchW9+rakxKIAcgbl9rW79zun
+            BxmuT9FZECKLTAZsixS+2kw8hKQMoWFD7q577x7DIaqnkc631QOB5G+mus/4IVsY
+            LkTAzh5lkWa5lXM4VkZi4o6p0GpYjknAMguDqT90FCQ4iElPefog5MfU8dRdgcQc
+            dxl8JoGw7ci4WcwgoAj6kUaISwbnKDpviyLKAgD58g==
+            -----END CERTIFICATE-----
+          client_cert: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEowIBAAKCAQEA0bzSZs3Bvp+MkiS04pdecyiZQTT8uKMiXWZjM6q3UV07BnTv
+            WBHQiZzyBy5xRE2RF1fQuRzjxRSCFwRMyzuazkPXJ9o8keHbh1+YWFOOeW2MnpY5
+            ZFf0pNDljDlRo/BnmNYDsuDE41g9B6X9sgkkhf8Y5ooaSq23WJkaTAybsPXvjAU/
+            omU/qszzdG5wl8n7gYEia4oOf6VPDGsW0EBocoukgyXLzecOUcvUfGmB6DFxeFhj
+            9FGXTcrh9kkTgDnZRQBgzA6aTNidjH4EUD6zoKNenHeKgitnj7jm8evauHkQ+chh
+            VzXVbifIN5ddKON6+QlPijBo/ouHTjSj4nUxLwIDAQABAoIBACLw2AR0ZsCBCAQY
+            xWGyYfPBYbaxQyDnXIQ+2Gv1FtEhPQIYXP9JCHrEgLWdkRUV7wP6hzUvkOp2Pi3j
+            c3+wEFwohSGIg+qxu8bTsCeW0/d6vqB02l7TIFiMzJENw4ISPNADZ15Xf7V4L8Kk
+            bp1IVKNWGind+/9Q7Wh/KRheSVmzccMedaIZ5pqQg16mgJC3iX4pkbQCkje1417L
+            zKa+5Ibg+g6YdwLAOfkKMezbBwz3YrOtS1Zfl1300llgw+R+Y0tpq4zxA0VCkA6y
+            OqdDH6RQux2Psu1ry11htAScH3y9kayXg5x+5kBOdIiHPaGXtIQkXwVR5fGYgcR1
+            rvF/tRECgYEA9CXxgtwi0xszhbBA2pGdEfhUZNtfg8EL+SoSZTA2k/h74iFQ7KCN
+            eFtiM/cv+E0dYoSaS/pdzlRTwQhN9ypwcBXQCQYHkgaPx95HEHR2DEFCTHKP2t4Y
+            sopPLXlNsjChIBV1CwKMCydCeLjNb+VmZC2sgxaQt6azBoXejyjFwbsCgYEA2+tA
+            +TWBYzfJH2Cfdy980QRL1cVWtjWpuTEaSh1ySEQY1cKEULp5mR8pE6uEAlBRQ6Mh
+            TL23n/OxXXdndI/iFScxriPN6MEzR2sZ5JUqRJ/x5WtB8pSssSXu36Lp8DyBXO8t
+            ZPY0ZPSUEZIdZW+h5ir17jkryRV6ilOUmyVLTR0CgYEAvA1Jw8Cpdi86dRu4KGIG
+            OKQs5O5v2HzmKwnz10rWjwzS5u9AdLKJpQ3GSz53DWrgWlTGwATdIiKjzEgIPXvL
+            1RmH/ptNU3WIY6ta01rQ3kmZtmZ7VVrCbSrJJ76KUNjSEnNUjqFsmt6nfXLikfCA
+            +GKRwPqthzd4J2sPbPc7sycCgYA/2sYJ1ixUd70xHCgRPjuaoQm3702nKFu4hvZg
+            ML6fFw6y+oDaw9pMyIxvxqxU06dU4Ufo9Wkcy3BjeCkU4jY9+BxnuMOv4nEWOpXR
+            FjKorFxbRdJnMh4WbbI3QyFz/M1/A3+FwisiaRWZKHjanBhBMZYo7na1M0RaZ7xN
+            c/2yTQKBgFN3WG77EQUAHLzMiN6YPolFUhMAjEOQe61CToAhFmlJibgi540J22Yi
+            1/O87sIG95oaF2hhDcCgC2nBxeu6k7z7/XZJnZfdlvQOyiY2D9JO6n8Jh5O2lrVU
+            MIlgfbU+4mD0b3sa6p4b7nCbNQTwI0U2YWcgI5t4xX7ejQCF3jlb
+            -----END RSA PRIVATE KEY-----
+            -----BEGIN CERTIFICATE-----
+            MIIDIzCCAgsCCQDP/loUgMPt9DANBgkqhkiG9w0BAQ0FADBUMQswCQYDVQQGEwJX
+            TzEOMAwGA1UECAwFV29ybGQxDjAMBgNVBAcMBVdvcmxkMRgwFgYDVQQKDA9Nb25n
+            b0VudGVycHJpc2UxCzAJBgNVBAsMAkNBMB4XDTE2MTEwODEzMDU1NVoXDTI3MTAy
+            MjEzMDU1NVowUzELMAkGA1UEBhMCV08xDjAMBgNVBAgMBVdvcmxkMRkwFwYDVQQK
+            DBBBdXRvbWF0aW9uIEFnZW50MRkwFwYDVQQDDBAqLnNlcnZpY2UuY29uc3VsMIIB
+            IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0bzSZs3Bvp+MkiS04pdecyiZ
+            QTT8uKMiXWZjM6q3UV07BnTvWBHQiZzyBy5xRE2RF1fQuRzjxRSCFwRMyzuazkPX
+            J9o8keHbh1+YWFOOeW2MnpY5ZFf0pNDljDlRo/BnmNYDsuDE41g9B6X9sgkkhf8Y
+            5ooaSq23WJkaTAybsPXvjAU/omU/qszzdG5wl8n7gYEia4oOf6VPDGsW0EBocouk
+            gyXLzecOUcvUfGmB6DFxeFhj9FGXTcrh9kkTgDnZRQBgzA6aTNidjH4EUD6zoKNe
+            nHeKgitnj7jm8evauHkQ+chhVzXVbifIN5ddKON6+QlPijBo/ouHTjSj4nUxLwID
+            AQABMA0GCSqGSIb3DQEBDQUAA4IBAQAYLHMAD+SIjYEzeNXWdiKTzi0NUtkOHOmJ
+            Mfsx+m+RQZYb4u5+8NL2bfokXVdnvkCcLqoCZlj2BDRORuDfWAHg44zlXA+j17ov
+            SZWqHqPimEM8pu9zM7VVdAkdN8nAR+83HtIW0Vw3qD8GeH/i9qig483rOktgKVFN
+            H3U4nhqvXp36scZlXvP3j0Dn4FQf+tBglpqlvPSsOshG8iKUWCpCusaSFzq7b5nM
+            m9UzhEF+koe91a9IfGX8X0Wy3B+o14Fd/IlZLtLnZNhJ1kt1erwonRxVMUaV6FTC
+            AI8aNh4co4pnn+Fz1bm+xSYwVatc0j3Ab3pgTKHtr0jrcxe94inv
+            -----END CERTIFICATE-----
+      mongodb:
+        tuning: false
+        port: 27017
+        health:
+          user: admin
+          password: admin
+        bin_path: /var/vcap/store/mms-automation-agent/bin/
+    release: mongodb-enterprise
+  - name: consul
+    release: consul
+    provides:
+      consul_servers:
+        as: consul-service
+    consumes:
+      consul_servers:
+        from: consul_server
+        deployment: mongodb-enterprise
+    properties:
+      consul:
+        server: false
+        encrypt: Sf0GBmBGvG05YDSQVRMvdg==
+        join_hosts: [10.244.13.15]
+        datacenter: warden-test-dc
+        acl_datacenter: warden-test-dc
+        acl_token: 6dce985b-05c4-47ca-9430-98741c976b11
+  networks:
+  - name: mongodb-enterprise-network
+    default:
+    - dns
+    - gateway
+  persistent_disk: 10240
+  resource_pool: mongodb-enterprise
+  update:
+    canaries: 1
+
+properties: {}
