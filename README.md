@@ -7,9 +7,18 @@ You find the apropriate version information in your OpsManager installation unde
 
 ##### Example:
 Release specified in OpsManager: 
-```mongodb-mms-automation-agent-3.2.11.2025-1.linux_x86_64```
+
+```
+mongodb-mms-automation-agent-3.2.11.2025-1.linux_x86_64
+```
+
 Version string: 
-```3.2.11.2025-1```
+
+```
+3.2.11.2025-1
+```
+
+Please read [this wiki page](https://github.com/swisscom/mongodb-enterprise-boshrelease/wiki/Consul-Integration) about the consul integration.
 
 ## Usage
 
