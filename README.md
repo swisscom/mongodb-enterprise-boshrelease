@@ -35,26 +35,16 @@ bosh upload release releases/mongodb-enterprise-1.0.0.yml
 For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment by using the existing example manifests located in `templates`.
 
 
-### Development
+### Contibute
 
-As a developer of this release, create new releases and upload them:
+Fork the repository and make a local clone
 
-```
-bosh create release && bosh -n upload release
-```
+Create a feature branch from the master branch
 
-### Final releases
+cd mongodb-enterprise-boshrelease
+git checkout -b my_branch
+Make changes on your branch
 
-To share final releases:
+Deploy your version of mongodb-enterprise-boshrelease to test the changes
 
-```
-bosh create release --final
-```
-
-By default the version number will be bumped to the next major number. You can specify alternate versions:
-
-
-```
-bosh create release --final --version 1.0.0 --with-tarball
-```
-
+Push to your fork (git push origin my_branch) and submit a pull request selecting master as the target branch
