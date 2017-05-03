@@ -32,7 +32,7 @@ cd mongodb-enterprise-boshrelease
 bosh upload release releases/mongodb-enterprise-1.0.0.yml
 ```
 
-For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment by using the existing example manifests located in `manifest-examples`.
+For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment by using the existing example manifests located in `templates`.
 
 
 ### Development
