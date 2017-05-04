@@ -1,10 +1,10 @@
 # BOSH Release for MongoDB Enterprise
 
-This repo is a [BOSH](https://bosh.io) release for deploying MongoDB Enterprise](https://www.mongodb.com/). It requires an existing [OpsManager](https://www.mongodb.com/de/products/ops-manager) instalation.
+This repository is a [BOSH](https://bosh.io) release for deploying MongoDB Enterprise(https://www.mongodb.com/). It requires an existing [OpsManager](https://www.mongodb.com/de/products/ops-manager) installation.
 
 VMs deployed with this BOSH release will download and run the latest automation agent version found on OpsManager.
 If a specific version is required it can specified in the deployment manifest under `mms-automation-agent.version`.
-You find the apropriate version information in your OpsManager installation under `Deployments / Agents / Downloads & Settings`. Select `Other Linux - TAR` and copy the version string.
+You find the appropriate version information in your OpsManager installation under `Deployments / Agents / Downloads & Settings`. Select `Other Linux - TAR` and copy the version string.
 
 ##### Example:
 Release specified in OpsManager: 
