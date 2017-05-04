@@ -8,4 +8,6 @@ builds:
     version: 1.0.2
   c67c0d9e-f487-45b3-93a8-c0c3312424d2:
     version: 1.0.3
+  fabc1b77-201e-49d0-876d-f147894ad541:
+    version: 1.0.4
 format-version: '2'
