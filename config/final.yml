@@ -7,4 +7,5 @@ blobstore:
     host: 6e2b167f9571a3ca404505bac70dd854.ds11s3ns.swisscom.com
     port: 443
     ssl_verify_peer: false
+    credentials_source: static
 final_name: mongodb-enterprise
