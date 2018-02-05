@@ -61,11 +61,11 @@ case $1 in
     #if [ ! -h /var/log/mongodb-mms-automation ]; then
     #  ln -s /var/vcap/sys/log/mms-automation-agent /var/log/mongodb-mms-automation
     #fi
-
+    rm -rf /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*/
     mkdir -p /var/vcap/data/mms-automation-agent/
     curl -L <%= p('mms-automation-agent.mmsBaseUrl') %>/download/agent/automation/mongodb-mms-automation-agent-<%= p('mms-automation-agent.version') %>.linux_x86_64.tar.gz | tar xvz -C /var/vcap/data/mms-automation-agent/
-
     cp /var/vcap/jobs/mms-automation-agent/config/automation-agent.config /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*/
+    chown -R vcap: /var/vcap/data/mms-automation-agent/
     exec chpst -u vcap:vcap /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*.linux_x86_64/mongodb-mms-automation-agent -f /var/vcap/data/mms-automation-agent/mongodb-mms-automation-agent-*.linux_x86_64/automation-agent.config -pidfilepath $PIDFILE -logFile $LOG_DIR/$JOB_NAME.log
 
     ;;

@@ -1,0 +1,1 @@
+Small bugfix which prevented automatic updates of automation agents due to wrong permissions.
