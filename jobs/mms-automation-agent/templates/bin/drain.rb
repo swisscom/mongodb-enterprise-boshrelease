@@ -34,7 +34,7 @@ while i < 60 do
   if cluster_healty?
     puts 'cluster OK, proceeding'
     
-    str = `mongo localhost:<%= p('mongodb.net.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(db.isMaster())' --quiet`
+    str = `mongo localhost:<%= p('mongodb.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(db.isMaster())' --quiet`
     puts str
 
     parsed = JSON.parse(str)
@@ -42,10 +42,10 @@ while i < 60 do
 
     if parsed['ismaster'] == true
       puts 'node is writeable, doing rs.stepDown now'
-      `mongo localhost:<%= p('mongodb.net.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
+      `mongo localhost:<%= p('mongodb.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
     end
 
-    `mongo localhost:<%= p('mongodb.net.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet`
+    `mongo localhost:<%= p('mongodb.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet`
 
     `/var/vcap/bosh/bin/monit stop mms-automation-agent`
     `pkill mongo`
