@@ -40,7 +40,7 @@ while i < 60 do
     parsed = JSON.parse(str)
 
 
-    if parsed['ismaster'] = 'true'
+    if parsed['ismaster'] == true
       puts 'node is writeable, doing rs.stepDown now'
       `mongo localhost:<%= p('mongodb.net.port') %>/admin -u admin -p '<%= p('mongodb.admin.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
     end
