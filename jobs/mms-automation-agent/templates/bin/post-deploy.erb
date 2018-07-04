@@ -4,4 +4,6 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # add the (latest and greatest installed) mongodb binaries to the $PATH for all users (for convenience of the operators)
-echo -e "#!/bin/bash\nexport PATH=$(dirname $(ls -1v /var/vcap/store/mongodb-mms-automation/mongodb-linux-*/bin/mongo)):\${PATH}" > /etc/profile.d/mongodb.sh
+# since several versions might be installed, we use `ls -1v <globbed path> | tail -n1` to get the latest version
+# additionally, empty `mongodb-linux-*` folders can be left behind, therefore globbing the folder isn't enough, but we need to glob for `mongodb-linux-*/bin/mongo`
+echo -e "#!/bin/bash\nexport PATH=$(dirname $(ls -1v /var/vcap/store/mongodb-mms-automation/mongodb-linux-*/bin/mongo | tail -n1)):\${PATH}" > /etc/profile.d/mongodb.sh
