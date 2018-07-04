@@ -7,6 +7,7 @@ packages:
 
 templates:
   bin/mms-automation-agent_ctl: bin/mms-automation-agent_ctl
+  bin/post-deploy.erb: bin/post-deploy
   bin/monit_debugger: bin/monit_debugger
   bin/set_fqdn: bin/set_fqdn
   bin/register_consul_service: bin/register_consul_service
