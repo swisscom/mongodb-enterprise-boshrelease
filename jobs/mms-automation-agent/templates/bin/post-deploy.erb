@@ -6,6 +6,5 @@ set -u # report the usage of uninitialized variables
 # add the (latest and greatest installed) mongodb binaries to the $PATH for all users (for convenience of the operators)
 # since several versions might be installed, we use `ls -1v <globbed path> | tail -n1` to get the latest version
 # additionally, empty `mongodb-linux-*` folders can be left behind, therefore globbing the folder isn't enough, but we need to glob for `mongodb-linux-*/bin/mongo`
-# but first, wait up to 300s for the automation agent to install mongodb in case of a fresh deployment
-timeout 300 bash -c -- "until ls /var/vcap/store/mongodb-mms-automation/mongodb-linux-* &> /dev/null; do sleep 1; done" && \
-echo -e "#!/bin/bash\nexport PATH=$(dirname $(ls -1v /var/vcap/store/mongodb-mms-automation/mongodb-linux-*/bin/mongo | tail -n1)):\${PATH}" > /etc/profile.d/mongodb.sh
+echo '#!/bin/bash' > /etc/profile.d/mongodb.sh
+echo 'export PATH="$(dirname $(ls -1v /var/vcap/store/mongodb-mms-automation/mongodb-linux-*/bin/mongo | tail -n1)):${PATH}" &> /dev/null' >> /etc/profile.d/mongodb.sh
