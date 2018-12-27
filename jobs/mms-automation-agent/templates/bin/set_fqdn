@@ -2,12 +2,10 @@
 
 set +e
 
-# Set fqdn as service_id+index
-export fqdn="<%= p("mms-automation-agent.service_id") %>-<%= spec.index %>.service.consul"
-grep -q "${fqdn}" /etc/hosts
-if [ $? -eq 1 ]; then
-  sed -i "s/\(.*\) localhost \(.*\)/\1 ${fqdn} localhost \2/" /etc/hosts
-fi
+# Set fqdn as service_id+index or bosh dns address
+export fqdn="<%= p('mongodb.use_consul') ? "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.consul" : spec.address %>"
+
+sed -i "s/^\(127.0.0.1\)\W*\(localhost\)/\1 ${fqdn} \2/" /etc/hosts
 
 # Check if fqdn matches what we want
 if [ "$(hostname -f)" = "${fqdn}" ]; then

@@ -26,13 +26,13 @@ case $1 in
         # disk read-ahead
         STORAGE_DEVICE=$(df | grep '/var/vcap/store' | awk '{print $1;}')
         blockdev --setra 32 ${STORAGE_DEVICE}
-        if [[ $(sysctl fs.file-max | awk '{print $3;}') -lt 98000 ]]; then 
+        if [[ $(sysctl fs.file-max | awk '{print $3;}') -lt 98000 ]]; then
           sysctl -w fs.file-max=98000
         fi
-        if [[ $(sysctl kernel.pid_max | awk '{print $3;}') -lt 64000 ]]; then 
+        if [[ $(sysctl kernel.pid_max | awk '{print $3;}') -lt 64000 ]]; then
           sysctl -w kernel.pid_max=64000
         fi
-        if [[ $(sysctl kernel.threads-max | awk '{print $3;}') -lt 64000 ]]; then 
+        if [[ $(sysctl kernel.threads-max | awk '{print $3;}') -lt 64000 ]]; then
           sysctl -w kernel.threads-max=64000
         fi
         sysctl -w net.ipv4.tcp_keepalive_time=120
@@ -55,7 +55,9 @@ case $1 in
 
     # set job + index as fqdn for ops manager registration
     /var/vcap/jobs/mms-automation-agent/bin/set_fqdn
+    <% if p('mongodb.use_consul') %>
     /var/vcap/jobs/mms-automation-agent/bin/register_consul_service
+    <% end %>
 
     # workaround logpath for monitoring & backup agent
     #if [ ! -h /var/log/mongodb-mms-automation ]; then
