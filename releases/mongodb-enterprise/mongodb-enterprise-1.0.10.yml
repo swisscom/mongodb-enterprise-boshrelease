@@ -1,0 +1,26 @@
+name: mongodb-enterprise
+version: 1.0.10
+commit_hash: 22a6e7c
+uncommitted_changes: false
+jobs:
+- name: mms-automation-agent
+  version: b80ae94c3740af22504ad707bec543b12874b61a
+  fingerprint: b80ae94c3740af22504ad707bec543b12874b61a
+  sha1: 769d3ae6aa7890e0ca49eed62ef9fc863423ca3f
+packages:
+- name: net-snmp
+  version: c50893a0a9483b6484e33e674baf0ae77c84efa4
+  fingerprint: c50893a0a9483b6484e33e674baf0ae77c84efa4
+  sha1: efba2562db4ea509f4c001ec869bc5102831ceb4
+  dependencies:
+  - perl
+- name: perl
+  version: 5b5b2be27ba977b26642f54e6af35047dd315667
+  fingerprint: 5b5b2be27ba977b26642f54e6af35047dd315667
+  sha1: 926f45e8ef55004ce749182b67b6e805b00164b4
+  dependencies: []
+- name: ruby
+  version: 942c79e2a70c269a49dda3abb83006bc38a40b44
+  fingerprint: 942c79e2a70c269a49dda3abb83006bc38a40b44
+  sha1: 366c928467704b3bcf079dfe28359a9500879301
+  dependencies: []
