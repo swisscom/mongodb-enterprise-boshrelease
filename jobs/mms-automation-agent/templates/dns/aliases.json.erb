@@ -1,0 +1,10 @@
+<%
+  dns = p("mongodb.dns")
+  ips = p("mongodb.ips")
+
+  aliases = {}
+  # we expect dns and ips to have the same length
+  dns.zip(ips) do |name, ip|
+    aliases[name]=[ip]
+  end
+%><%= aliases.to_json %>

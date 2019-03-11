@@ -18,6 +18,7 @@ templates:
   config/ca-cert.pem: config/ca-cert.pem
   config/client.pem: /config/client.pem
   data/properties.sh.erb: data/properties.sh
+  dns/aliases.json.erb: dns/aliases.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
@@ -54,6 +55,12 @@ properties:
   mongodb.use_consul:
     description: use consul instead of bosh-dns for node discovery
     default: true
+  mongodb.dns:
+    description: DNS names to configure for the IPs below
+    default: []
+  mongodb.ips:
+    description: IP addresses to configure for the DNS names above
+    default: []
 
   mongodb.health.user:
     description: Pre-provisioned user that is allowed to access rs.status() over the mongo cli.
