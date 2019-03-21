@@ -7,7 +7,7 @@ set +e
 # Set fqdn as service_id+index or bosh dns address
 export fqdn="<%= "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.consul" %>"
 
-<% else %>
+<% else
 
 dns = p("mongodb.dns")
 ips = p("mongodb.ips")
@@ -17,6 +17,8 @@ aliases = {}
 dns.zip(ips) do |name, ip|
   aliases[ip]=name
 end
+
+%>
 
 export fqdn="<%= "#{aliases[spec.ip]}" %>"
 
