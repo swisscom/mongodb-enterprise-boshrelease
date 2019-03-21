@@ -9,18 +9,16 @@ export fqdn="<%= "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.
 
 <% else
 
-dns = p("mongodb.dns")
-ips = p("mongodb.ips")
+aliases = p("aliases")
 
-aliases = {}
-# we expect dns and ips to have the same length
-dns.zip(ips) do |name, ip|
-  aliases[ip]=name
+result = {}
+aliases.each do |name, ip|
+  result[ip]=name
 end
 
 %>
 
-export fqdn="<%= "#{aliases[spec.ip]}" %>"
+export fqdn="<%= "#{result[spec.ip]}" %>"
 
 <% end %>
 
