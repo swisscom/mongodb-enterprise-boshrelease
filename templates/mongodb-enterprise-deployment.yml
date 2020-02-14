@@ -1,0 +1,23 @@
+meta: (( prune ))
+
+name: (( param "please set name" ))
+director_uuid: (( param "please set director_uuid" ))
+releases: (( param "please set releases" ))
+stemcells: (( param "please set stemcells" ))
+
+instance_groups: (( param "please set instance_groups" ))
+properties: {}
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 30000-180000
+  update_watch_time: 5000-180000
+  serial: true
+
+# infrastructure
+azs: (( prune ))
+networks: (( prune ))
+compilation: (( prune ))
+vm_types: (( prune ))
+disk_types: (( prune ))
