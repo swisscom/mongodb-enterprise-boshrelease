@@ -23,10 +23,6 @@ update:
   update_watch_time: 10000-200000
   serial: true
 
-disk_pools:
-- cloud_properties: {}
-  disk_size: 5120
-  name: mongodb-enterprise-persistent-disk
 
 resource_pools:
 - cloud_properties: {}
