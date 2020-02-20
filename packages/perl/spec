@@ -3,4 +3,4 @@ name: perl
 dependencies: []
 
 files:
-- perl/perl-5.24.3.tar.gz # perl: http://search.cpan.org/~shay/perl/pod/perldelta.pod
+- perl/perl-5.28.2.tar.gz # perl: http://search.cpan.org/~shay/perl/pod/perldelta.pod
