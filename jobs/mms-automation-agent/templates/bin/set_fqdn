@@ -23,6 +23,7 @@ export fqdn="<%= "#{result[spec.ip]}" %>"
 <% end %>
 
 sed -i "s/^\(127.0.0.1\)\W*\(localhost\)/\1 ${fqdn} \2/" /etc/hosts
+hostnamectl set-hostname $fqdn
 
 # Check if fqdn matches what we want
 if [ "$(hostname -f)" = "${fqdn}" ]; then
