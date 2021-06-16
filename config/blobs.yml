@@ -2,6 +2,10 @@ net-snmp/net-snmp-5.7.3.tar.gz:
   size: 6382428
   object_id: 09ae972e-555c-4f26-a2c0-568caec969ee
   sha: 97dc25077257680815de44e34128d365c76bd839
+net-snmp/net-snmp-5.9.1.tar.gz:
+  size: 6711774
+  object_id: 5df3459b-82df-4a48-aabf-2142c7f6fdb9
+  sha: sha256:eb7fd4a44de6cddbffd9a92a85ad1309e5c1054fb9d5a7dd93079c8953f48c3f
 perl/perl-5.30.1.tar.gz:
   size: 17712574
   object_id: ee4efd11-55aa-458f-6deb-324bc4dce5df
@@ -10,3 +14,7 @@ ruby/ruby-2.3.2.tar.gz:
   size: 17814200
   object_id: 0a4a0090-ce8f-420a-b764-fe07b96ce4f8
   sha: baef56b27941bfbfac6e2cd005b686d320c7f124
+ruby/ruby-2.7.3.tar.gz:
+  size: 16912725
+  object_id: 8af15b1d-794e-4189-ad68-cb9653788f33
+  sha: sha256:8925a95e31d8f2c81749025a52a544ea1d05dad18794e6828709268b92e55338

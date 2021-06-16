@@ -1,4 +1,4 @@
 ---
 name: ruby
 files:
-- ruby/ruby-2.3.2.tar.gz
+- ruby/ruby-2.7.3.tar.gz
