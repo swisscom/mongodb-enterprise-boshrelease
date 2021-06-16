@@ -21,6 +21,7 @@ templates:
   dns/aliases.json.erb: dns/aliases.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  bin/mongodb_connection_string.sh: bin/mongodb_connection_string.sh
 
 
 properties:
