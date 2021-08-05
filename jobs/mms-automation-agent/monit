@@ -3,3 +3,8 @@ check process mms-automation-agent
   start program "/var/vcap/jobs/mms-automation-agent/bin/monit_debugger mms-automation-agent_ctl '/var/vcap/jobs/mms-automation-agent/bin/mms-automation-agent_ctl start'"
   stop program "/var/vcap/jobs/mms-automation-agent/bin/monit_debugger mms-automation-agent_ctl '/var/vcap/jobs/mms-automation-agent/bin/mms-automation-agent_ctl stop'"
   group vcap
+
+check file hosts with path /etc/hosts
+  ignore match "(#|:|fe00|ff00|ff02|100\.106|[space]).*"
+  if not match "127.0.0.1 <%= "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.consul" %>"
+  then exec "/var/vcap/jobs/mms-automation-agent/bin/set_fqdn"
