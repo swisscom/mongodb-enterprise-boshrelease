@@ -6,7 +6,6 @@ releases: (( param "please set releases" ))
 stemcells: (( param "please set stemcells" ))
 
 instance_groups: (( param "please set instance_groups" ))
-properties: {}
 
 update:
   canaries: 1
