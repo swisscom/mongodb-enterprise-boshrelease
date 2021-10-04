@@ -7,3 +7,4 @@ files:
 - snmp_5.7.3.deb
 - libsnmp30_5.7.3.deb
 - libsnmp-base_5.7.3.deb
+- snmp-mibs-downloader_1.1.deb
