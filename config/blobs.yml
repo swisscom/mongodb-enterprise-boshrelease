@@ -1,8 +1,10 @@
 libsnmp-base_5.7.3.deb:
   size: 223696
+  object_id: e6fc8c88-c235-4846-77a7-f8cdbddc44a9
   sha: sha256:aa089e02b30db02ef6623c3402a0a282b47897e0b81625c29c09ce9beba17270
 libsnmp30_5.7.3.deb:
   size: 926064
+  object_id: 7ccd99ff-8123-48f3-7350-0643c0ea8fea
   sha: sha256:ae2348c099091b1c052e740ee2c1c28c34ee02bd844cd00ec136d32e52b04fa1
 net-snmp/net-snmp-5.7.3.tar.gz:
   size: 6382428
@@ -26,4 +28,5 @@ ruby/ruby-2.7.3.tar.gz:
   sha: sha256:8925a95e31d8f2c81749025a52a544ea1d05dad18794e6828709268b92e55338
 snmp_5.7.3.deb:
   size: 157788
+  object_id: 63c17c44-9c5b-47d8-4561-02595de9f2b2
   sha: sha256:343f03bd315fef37ab04f5c16584eeca2d48c61cde4f89d22e51d26eb82574ea
