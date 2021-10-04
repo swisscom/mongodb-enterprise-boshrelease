@@ -1,0 +1,9 @@
+---
+name: net-snmp-deb
+dependencies: 
+- perl
+
+files:
+- snmp_5.7.3.deb
+- libsnmp30_5.7.3.deb
+- libsnmp-base_5.7.3.deb
