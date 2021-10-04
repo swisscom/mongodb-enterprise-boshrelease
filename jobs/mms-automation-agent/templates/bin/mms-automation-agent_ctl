@@ -48,10 +48,13 @@ case $1 in
     chmod 777 /var/vcap/store/mongodb-audit
     chmod 775 /var/log
 
+    #install lib-snmp
+    dpkg -i /var/vcap/packages/net-snmp-deb/*.deb
+
     # add libsnmp path
-    echo "/var/vcap/packages/net-snmp/lib/" > /etc/ld.so.conf.d/net-snmp.conf
+    #echo "/var/vcap/packages/net-snmp/lib/" > /etc/ld.so.conf.d/net-snmp.conf
     # load new config
-    /sbin/ldconfig
+    #/sbin/ldconfig    
 
     # set job + index as fqdn for ops manager registration
     /var/vcap/jobs/mms-automation-agent/bin/set_fqdn
