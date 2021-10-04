@@ -26,6 +26,10 @@ ruby/ruby-2.7.3.tar.gz:
   size: 16912725
   object_id: 8af15b1d-794e-4189-ad68-cb9653788f33
   sha: sha256:8925a95e31d8f2c81749025a52a544ea1d05dad18794e6828709268b92e55338
+smistrip_0.4.8.deb:
+  size: 7718
+  object_id: 60d21751-4d89-4fad-77f8-5ee15a5ebe0b
+  sha: sha256:498e6d985f45a3f63643374a700db3d729775de47d9be9ff62d96d42d5568d3b
 snmp-mibs-downloader_1.1.deb:
   size: 5164356
   object_id: c0fd5683-de5a-4658-4e90-d4ec616aca8e
