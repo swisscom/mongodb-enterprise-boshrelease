@@ -7,7 +7,7 @@ mkdir -p /var/vcap/data/telegraf
 # enable mongodb telegraf plugin
 cat > /var/vcap/data/telegraf/mongodb.conf << EOF
 [[inputs.mongodb]]
-  servers = ["mongodb://<%= p('mongodb.health.user') %>:<%= p('mongodb.health.password') %>@127.0.0.1:<%= p('mongodb.port') %>/admin?authSource=admin"]
+  servers = ["mongodb://<%= p('mongodb.health.user') %>:<%= p('mongodb.health.password') %>@127.0.0.1:<%= p('mongodb.port') %>/admin?authSource=admin&connect=direct"]
 
 EOF
 chown -R vcap:vcap /var/vcap/data/telegraf/
