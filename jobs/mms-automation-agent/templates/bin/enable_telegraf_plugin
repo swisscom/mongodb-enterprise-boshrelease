@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set +e
+
+mkdir -p /var/vcap/data/telegraf
+
+# enable mongodb telegraf plugin
+cat > /var/vcap/data/telegraf/mongodb.conf << EOF
+[[inputs.mongodb]]
+  servers = ["mongodb://<%= p('mongodb.health.user') %>:<%= p('mongodb.health.password') %>@127.0.0.1:<%= p('mongodb.port') %>/admin?authSource=admin"]
+
+EOF
+chown -R vcap:vcap /var/vcap/data/telegraf/
+
+# reload telegraf config files with a timeout of 120s to prevent monit/bosh agent from failing (https://issue.swisscom.ch/browse/CLOUDAC-6779)
+bash -c "sleep 120 ; /var/vcap/bosh/bin/monit restart telegraf || true" &
+
+set -e
