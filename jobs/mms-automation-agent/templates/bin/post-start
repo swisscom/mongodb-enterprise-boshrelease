@@ -4,3 +4,11 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 /var/vcap/jobs/mms-automation-agent/bin/enable_telegraf_plugin
+
+# Check if folder exists starting with rs_*
+check_rs_folder=$(ls -1 /var/vcap/store/mongodb-data/rs* 2> /dev/null)
+
+# If folder exists we assume that the replicaset is initialized and we have to waint until the cluster is healthy
+if [[ ! -z  $check_rs_folder ]];then
+      ruby /var/vcap/jobs/mms-automation-agent/bin/post-start.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/post-start.log
+fi
