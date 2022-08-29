@@ -12,3 +12,18 @@ check_rs_folder=$(ls -1 /var/vcap/store/mongodb-data/rs* 2> /dev/null)
 if [[ ! -z  $check_rs_folder ]];then
       ruby /var/vcap/jobs/mms-automation-agent/bin/post-start.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/post-start.log
 fi
+
+# Sometimes we need to restart consul if the registration fails
+# Get Local IP Address
+LOCAL_IP=$(ip a show eth0 |grep inet |sed 's/inet\s//g;s/\/.*$//g;s/\s//g')
+
+# Get an IP Address of a dns server
+DNS_IP=$(cat /etc/resolv.conf |grep -v 127 |head -n1 |sed 's/nameserver\s//g')
+
+# Get IP Address via DNS of the host
+LOOKUP_IP=$(dig @${DNS_IP} <%= p('mms-automation-agent.service_id').tr('_', '-')}-#{spec.index} %> +short)
+
+# IF $LOOKUP_IP does not match $LOCAL_IP restart consul
+if [[ ! $LOOKUP_IP == $LOCAL_IP ]];then
+   /var/vcap/bosh/bin/monit restart consul
+fi
