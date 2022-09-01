@@ -6,10 +6,10 @@ set -u # report the usage of uninitialized variables
 /var/vcap/jobs/mms-automation-agent/bin/enable_telegraf_plugin
 
 # Check if folder exists starting with rs_*
-CHECk_RS_FOLDER=$(ls -1 /var/vcap/store/mongodb-data/rs* 2> /dev/null)
+CHECK_RS_FOLDER="/var/vcap/store/mongodb-data/rs*"
 
 # If folder exists we assume that the replicaset is initialized and we have to waint until the cluster is healthy
-if [[ ! -z  $CHECk_RS_FOLDER ]];then
+if [ -n "$(ls -d $CHECK_RS_FOLDER 2> /dev/null)" ];then
       ruby /var/vcap/jobs/mms-automation-agent/bin/post-start.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/post-start.log
 fi
 
@@ -19,7 +19,6 @@ fi
 CONSOL_PROC=$(/var/vcap/bosh/bin/monit summary |grep consul)
 
 if [[ ! -z $CONSOL_PROC ]];then
-    echo "aljdfakdsjf"
     # Get Local IP Address
     LOCAL_IP=$(ip a show eth0 |grep inet |sed 's/inet\s//g;s/\/.*$//g;s/\s//g')
 
@@ -27,10 +26,12 @@ if [[ ! -z $CONSOL_PROC ]];then
     DNS_IP=$(cat /etc/resolv.conf |grep -v 127 |head -n1 |sed 's/nameserver\s//g')
 
     # Get IP Address via DNS of the host
-    LOOKUP_IP=$(dig @${DNS_IP} <%= p('mms-automation-agent.service_id').tr('_', '-')}-#{spec.index} %> +short)
+	LOOKUP_IP=$(dig @${DNS_IP} <%= "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.consul" %> +short)
 
     # IF $LOOKUP_IP does not match $LOCAL_IP restart consul
     if [[ ! $LOOKUP_IP == $LOCAL_IP ]];then
        /var/vcap/bosh/bin/monit restart consul
     fi
 fi
+
+exit 0
