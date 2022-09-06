@@ -15,6 +15,7 @@ templates:
   bin/drain.rb: bin/drain.rb
   bin/enable_telegraf_plugin: bin/enable_telegraf_plugin
   bin/post-start: bin/post-start
+  bin/post-start.rb: bin/post-start.rb
   config/automation-agent.config.erb: config/automation-agent.config
   config/mms-cert.pem: config/mms-cert.pem
   config/ca-cert.pem: config/ca-cert.pem
