@@ -28,7 +28,7 @@ def cluster_healty?
 end
 
 
-# wait up to 10 minutes for cluster to get healty
+# wait until cluster is healthy 
 while true do
   if cluster_healty?
     puts 'cluster OK, proceeding'
