@@ -8,7 +8,7 @@ set -u # report the usage of uninitialized variables
 # Check if folder exists starting with rs_*
 CHECK_RS_FOLDER="/var/vcap/store/mongodb-data/rs*"
 
-# If folder exists we assume that the replicaset is initialized and we have to waint until the cluster is healthy
+# If folder exists we assume that the replicaset is initialized and we have to wait until the cluster is healthy
 if [ -n "$(ls -d $CHECK_RS_FOLDER 2> /dev/null)" ];then
       ruby /var/vcap/jobs/mms-automation-agent/bin/post-start.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/post-start.log
 fi
