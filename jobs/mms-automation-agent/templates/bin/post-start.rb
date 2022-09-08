@@ -7,6 +7,8 @@ def cluster_healty?
   puts str
 
   cluster_healty = true
+  
+  parsed = JSON.parse(str)
 
   parsed['members'].each { |member|
     if member['health'] == 0

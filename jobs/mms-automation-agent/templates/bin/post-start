@@ -3,6 +3,15 @@
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
+
+# Add all packages' /bin & /sbin into $PATH
+for package_bin_dir in $(ls -d /var/vcap/packages/*/*bin)
+do
+  export PATH=${package_bin_dir}:$PATH
+done
+
+export PATH=$PATH:<%= p('mongodb.bin_path') %>
+
 /var/vcap/jobs/mms-automation-agent/bin/enable_telegraf_plugin
 
 # Sometimes we need to restart consul if the registration fails
