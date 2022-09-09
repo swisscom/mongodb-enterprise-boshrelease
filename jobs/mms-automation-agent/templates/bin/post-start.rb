@@ -3,12 +3,21 @@ require 'json'
 
 def cluster_healty?
 
-  str = `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
-  puts str
+  begin
+
+    str = `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
+    puts str
+    parsed = JSON.parse(str)
+
+  rescue JSON::ParserError
+
+    sleep 5
+    retry
+
+  end
+
 
   cluster_healty = true
-  
-  parsed = JSON.parse(str)
 
   parsed['members'].each { |member|
     if member['health'] == 0
