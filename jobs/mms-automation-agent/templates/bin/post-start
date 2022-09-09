@@ -1,10 +1,9 @@
 #!/bin/bash
 
-exec 2>>"/var/vcap/sys/log/mms-automation-agent/post-start.log"
+exec >>"/var/vcap/sys/log/mms-automation-agent/post-start.log"
 
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
-
 
 # Add all packages' /bin & /sbin into $PATH
 for package_bin_dir in $(ls -d /var/vcap/packages/*/*bin)
@@ -30,27 +29,30 @@ if [[ ! -z $CONSUL_PROC ]];then
     do 
         # Get Local IP Address
         LOCAL_IP=$(ip a show eth0 |grep inet |sed 's/inet\s//g;s/\/.*$//g;s/\s//g')
-    
+
         # Get an IP Address of a dns server
         DNS_IP=$(cat /etc/resolv.conf |grep -v 127 |head -n1 |sed 's/nameserver\s//g')
-    
+
         # Get IP Address via DNS of the host
         LOOKUP_IP=$(dig @${DNS_IP} <%= "#{p("mms-automation-agent.service_id")}-#{spec.index}.service.consul" %> +short)
-    
+
         # IF $LOOKUP_IP does not match $LOCAL_IP restart consul if successfull break
         if [[ ! $LOOKUP_IP == $LOCAL_IP ]];then
-           /var/vcap/bosh/bin/monit restart consul
+           # Check if process is in running state and can be restarted
+           if [ ! -n "$(monit summary |grep consul | grep running)" ];then
+                   /var/vcap/bosh/bin/monit restart consul
+           fi
         else
             # Break while loop if IP is the same
             break
         fi
-        
+
         # Retry Logic
         if [ $CONSUL_CHECK_COUNT -eq $CONSUL_CHECK_TRIES ];then
             # Break while loop if the count is the same as tries
             break
         else
-            ((CONSUL_CHECK_COUNT++))
+            let "CONSUL_CHECK_COUNT=CONSUL_CHECK_COUNT+1"
         fi 
 
         # Sleep so consul can actually restart
