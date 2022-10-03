@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'json'
 
+skipFile="/var/vcap/store/mongodb-skip-post-start"
+startTime = Time.now
+timeOut = 28800
+
 def cluster_healty?
 
   begin
@@ -44,14 +48,18 @@ def cluster_healty?
   cluster_healty
 end
 
-
-# wait until cluster is healthy 
-while true do
+# wait until cluster is healthy until timeout is reached or skipfile exists
+# if cluster is healthy and skipfile exsists it will be healthy and ignore skipfile
+while Time.now < startTime + timeOut  do
   if cluster_healty?
-    puts 'cluster OK, proceeding'
-    break 
+    puts "cluster OK, proceeding"
+    break
+  elsif File.file?(skipFile)
+    puts "#{skipFile} found, therefore skipping"
+    break
   else
-    puts 'cluster unhealty; wait and try again'
+    puts "cluster unhealty; wait and try again"
     sleep 10
+
   end
 end
