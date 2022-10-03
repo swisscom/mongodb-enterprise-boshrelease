@@ -33,8 +33,10 @@ def cluster_healty?
   cluster_healty = true
 
   parsed['members'].each { |member|
-    if member['health'] == 0
-      puts 'unhealthy node: ' + member['name']
+    memberHealth=member['health']
+    # 0 => STARTUP, 3 => RECOVERING, 5 => STARTUP2, 9 => ROLLBACK
+    if memberHealth == 0 || memberHealth == 3 || memberHealth == 5 || memberHealth == 9
+      puts "unhealthy node: #{member['name']} with node status: #{memberHealth}"
       cluster_healty = false
     end
 
