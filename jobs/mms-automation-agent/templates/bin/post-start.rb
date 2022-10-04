@@ -51,11 +51,11 @@ end
 # wait until cluster is healthy until timeout is reached or skipfile exists
 # if cluster is healthy and skipfile exsists it will be healthy and ignore skipfile
 while Time.now < startTime + timeOut  do
-  if cluster_healty?
-    puts "cluster OK, proceeding"
-    break
-  elsif File.file?(skipFile)
+  if File.file?(skipFile)
     puts "#{skipFile} found, therefore skipping"
+    break
+  elsif cluster_healty?
+    puts "cluster OK, proceeding"
     break
   else
     puts "cluster unhealty; wait and try again"
