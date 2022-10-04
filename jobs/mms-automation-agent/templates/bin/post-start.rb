@@ -20,10 +20,10 @@ def cluster_healty?
 
   # Rescue mongoshell error 5 times
   rescue RuntimeError => e
-    sleep 5
+    sleep 10
     try += 1
     puts e
-    try <= 5 ? retry : raise
+    try <= 12 ? retry : raise
 
   # Rescue jsonparse error forever
   rescue JSON::ParserError => e
