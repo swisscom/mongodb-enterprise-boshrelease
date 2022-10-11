@@ -3,7 +3,7 @@ require 'json'
 
 skipFile="/var/vcap/store/mongodb-skip-post-start"
 startTime = Time.now
-timeOut = 3600
+timeOut = 3600  # 1 hour
 timeOutTime = startTime + timeOut
 
 try = 0
@@ -67,4 +67,11 @@ while Time.now < timeOutTime  do
     puts "cluster unhealty; wait and try again"
     sleep 10
   end
+end
+
+# fail if we exeeced the timeout
+if Time.now > timeOutTime
+  exit 1
+else 
+  exit 0
 end
