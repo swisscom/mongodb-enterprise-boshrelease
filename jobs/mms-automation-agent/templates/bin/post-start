@@ -39,7 +39,7 @@ if [[ ! -z $CONSUL_PROC ]];then
         # IF $LOOKUP_IP does not match $LOCAL_IP restart consul if successfull break
         if [[ ! $LOOKUP_IP == $LOCAL_IP ]];then
            # Check if process is in running state and can be restarted
-           if [ ! -n "$(monit summary |grep consul | grep running)" ];then
+           if [ ! -n "$(/var/vcap/bosh/bin/monit summary |grep consul | grep running)" ];then
                    /var/vcap/bosh/bin/monit restart consul
            fi
         else
