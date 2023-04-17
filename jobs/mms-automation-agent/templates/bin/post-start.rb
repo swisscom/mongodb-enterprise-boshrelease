@@ -6,7 +6,7 @@ startTime = Time.now
 timeOut = 3600  # 1 hour
 timeOutTime = startTime + timeOut
 
-try = 0
+@try = 0
 
 def get_rs_state
   begin
@@ -23,16 +23,16 @@ def get_rs_state
   # Rescue mongoshell error 12 times per run
   rescue RuntimeError => e
     sleep 10
-    try += 1
+    @try += 1
     puts e
-    try <= 12 ? retry : raise
+    @try <= 12 ? retry : raise
 
   # Rescue jsonparse error 12 times per run
   rescue JSON::ParserError => e
     sleep 5
-    try += 1
+    @try += 1
     puts e
-    try <= 12 ? retry : raise
+    @try <= 12 ? retry : raise
   end
 
 end
