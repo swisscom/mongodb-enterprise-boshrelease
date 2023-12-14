@@ -9,13 +9,15 @@ do
   export PATH=${package_bin_dir}:$PATH
 done
 
-export PATH=$PATH:<%= p('mongodb.bin_path') %>
+export PATH=$PATH:<%= p('mongodb.bin_path') %> #Path to mongodb binaries
+export PATH="$PATH:$(dirname "$(ls -1v /var/vcap/store/mongodb-mms-automation/mongosh-linux-*/bin/mongosh | tail -n1)")" #Path to mongosh shell binaries
+
 
 MONGOD_PROCS=`pgrep -f "mongod -f"`
 MONGOS_PROCS=`pgrep -f "mongos -f"`  
 if [ -n "$MONGOD_PROCS" ]; then
 
-  command -v mongo >/dev/null 2>&1 || { echo "mongo could not be found. please check mongodb.bin_path. Aborting." >&2; exit 1; }
+  command -v mongosh >/dev/null 2>&1 || { echo "mongosh could not be found. please check path. Aborting." >&2; exit 1; }
 
   ruby /var/vcap/jobs/mms-automation-agent/bin/drain.rb 2>&1 >> /var/vcap/sys/log/mms-automation-agent/drain.log
 
@@ -23,7 +25,7 @@ fi
 if [ -n "$MONGOS_PROCS" ]; then
 
 	 /var/vcap/bosh/bin/monit stop mms-automation-agent
-	 pkill mongo
+	 pkill mongosh
 
 fi
 

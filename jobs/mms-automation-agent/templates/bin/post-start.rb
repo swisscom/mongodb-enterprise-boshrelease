@@ -11,7 +11,7 @@ timeOutTime = startTime + timeOut
 def get_rs_state
   begin
 
-    str = `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
+    str = `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
 
     # Raise Error if status code is not 0s
     if $? != 0
