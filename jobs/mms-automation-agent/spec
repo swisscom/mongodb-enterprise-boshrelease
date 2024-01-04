@@ -61,15 +61,15 @@ properties:
     default: true
 
   mongodb.health.user:
-    description: Pre-provisioned user that is allowed to access rs.status() over the mongo cli.
+    description: Pre-provisioned user that is allowed to access rs.status() over the mongosh cli.
   mongodb.health.password:
     description: Password for the pre-provisioned user.
   mongodb.port:
     desctiption: Port of mongodb instance.
     default: 27017
   mongodb.bin_path:
-    description: Path to mongo cli binary.
-    default: /var/vcap/store/mms-automation-agent/bin/
+    description: Path to mongodb binaries.
+    default: /var/vcap/store/mongodb-mms-automation/bin/
 
   mongodb.tuning:
     description: enable mongodb kernel tuning

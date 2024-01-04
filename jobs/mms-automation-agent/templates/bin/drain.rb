@@ -3,7 +3,7 @@ require 'json'
 
 def cluster_healty?
 
-  str = `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
+  str = `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.status())' --quiet`
   puts str
 
   parsed = JSON.parse(str)
@@ -11,7 +11,7 @@ def cluster_healty?
   if parsed['errmsg'] == 'not running with --replSet'
     puts 'not in cluster mode, proceeding'
     `/var/vcap/bosh/bin/monit stop mms-automation-agent`
-    `pkill mongo`
+    `pkill mongosh`
     exit 0
   end
 
@@ -34,7 +34,7 @@ while i < 60 do
   if cluster_healty?
     puts 'cluster OK, proceeding'
     
-    str = `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.isMaster())' --quiet`
+    str = `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.isMaster())' --quiet`
     puts str
 
     parsed = JSON.parse(str)
@@ -42,13 +42,13 @@ while i < 60 do
 
     if parsed['ismaster'] == true
       puts 'node is writeable, doing rs.stepDown now'
-      `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
+      `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
     end
 
-    `mongo localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet`
+    `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet`
 
     `/var/vcap/bosh/bin/monit stop mms-automation-agent`
-    `pkill mongo`
+    `pkill mongosh`
     exit 0
   else
     puts 'cluster unhealty; wait and try again. try: ' + i.to_s

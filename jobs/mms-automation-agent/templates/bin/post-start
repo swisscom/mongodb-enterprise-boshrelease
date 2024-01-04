@@ -11,7 +11,8 @@ do
   export PATH=${package_bin_dir}:$PATH
 done
 
-export PATH=$PATH:<%= p('mongodb.bin_path') %>
+export PATH=$PATH:<%= p('mongodb.bin_path') %> #Path to mongodb binaries
+export PATH="$PATH:$(dirname "$(ls -1v /var/vcap/store/mongodb-mms-automation/mongosh-linux-*/bin/mongosh | tail -n1)")" #Path to mongosh shell binaries
 
 /var/vcap/jobs/mms-automation-agent/bin/enable_telegraf_plugin
 
