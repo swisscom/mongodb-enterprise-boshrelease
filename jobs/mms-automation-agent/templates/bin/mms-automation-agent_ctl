@@ -35,6 +35,9 @@ case $1 in
         if [[ $(sysctl kernel.threads-max | awk '{print $3;}') -lt 64000 ]]; then
           sysctl -w kernel.threads-max=64000
         fi
+        if [[ $(sysctl vm.max_map_count | awk '{print $3;}') -lt 102400 ]]; then
+          sysctl -w vm.max_map_count=102400
+        fi
         sysctl -w net.ipv4.tcp_keepalive_time=120
     <% end %>
 
