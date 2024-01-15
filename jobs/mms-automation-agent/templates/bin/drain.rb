@@ -11,7 +11,6 @@ def cluster_healty?
   if parsed['errmsg'] == 'not running with --replSet'
     puts 'not in cluster mode, proceeding'
     `/var/vcap/bosh/bin/monit stop mms-automation-agent`
-    `pkill mongosh`
     exit 0
   end
 
@@ -45,10 +44,10 @@ while i < 60 do
       `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(rs.stepDown())' --quiet`
     end
 
-    `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet`
-
     `/var/vcap/bosh/bin/monit stop mms-automation-agent`
-    `pkill mongosh`
+
+    `mongosh localhost:<%= p('mongodb.port') %>/admin -u <%= p('mongodb.health.user') %> -p '<%= p('mongodb.health.password') %>' --eval 'JSON.stringify(db.shutdownServer())' --quiet 2>&1 >> /var/vcap/sys/log/mms-automation-agent/drain.log`
+    
     exit 0
   else
     puts 'cluster unhealty; wait and try again. try: ' + i.to_s
