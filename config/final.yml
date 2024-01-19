@@ -8,5 +8,4 @@ blobstore:
     port: 443
     ssl_verify_peer: false
     credentials_source: static
-
 final_name: mongodb-enterprise
