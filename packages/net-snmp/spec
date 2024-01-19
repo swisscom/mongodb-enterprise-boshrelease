@@ -1,8 +1,0 @@
----
-name: net-snmp
-dependencies: 
-- perl
-
-files:
-#- net-snmp/net-snmp-5.9.1.tar.gz # libsnmp: https://sourceforge.net/projects/net-snmp/files/
-- net-snmp/net-snmp-5.7.3.tar.gz
