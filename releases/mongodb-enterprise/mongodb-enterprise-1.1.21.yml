@@ -1,0 +1,21 @@
+name: mongodb-enterprise
+version: 1.1.21
+commit_hash: 46744db
+uncommitted_changes: true
+jobs:
+- name: mms-automation-agent
+  version: ee9bf68815fe6ca59a887e4d9d85204497e72407aa096b6d3102bb2f5a63ba1a
+  fingerprint: ee9bf68815fe6ca59a887e4d9d85204497e72407aa096b6d3102bb2f5a63ba1a
+  sha1: sha256:75b047dac42de3271a72d4d85633b79b460eaa99701192ebc00b3d8ce4512eee
+  packages:
+  - ruby
+packages:
+- name: ruby
+  version: 18fa58224db8605a9cb25fd24c3437ffbff86bb37a433c2cda20b5e4148a710c
+  fingerprint: 18fa58224db8605a9cb25fd24c3437ffbff86bb37a433c2cda20b5e4148a710c
+  sha1: sha256:2a20ee922d1a93b36be5d52902f80ca4d996a98b47f9f222ca26f705df72aa16
+  dependencies: []
+license:
+  version: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  fingerprint: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  sha1: sha256:80ed2a5cdbd861f28ea12269f63e878d4988d4edb244b3a2f7fcab1b0c5715f3
