@@ -25,6 +25,7 @@ fi
 if [ -n "$MONGOS_PROCS" ]; then
 
 	 /var/vcap/bosh/bin/monit stop mms-automation-agent
+	 pkill mongosh
 
 fi
 

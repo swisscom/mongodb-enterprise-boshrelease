@@ -2,7 +2,6 @@
 name: mms-automation-agent
 
 packages:
-- net-snmp-deb
 - ruby
 
 templates:
