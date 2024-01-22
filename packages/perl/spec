@@ -1,0 +1,6 @@
+---
+name: perl
+dependencies: []
+
+files:
+- perl/perl_5.34.0.orig.tar.xz # perl: https://launchpad.net/ubuntu/+source/perl/5.34.0-3ubuntu1.3

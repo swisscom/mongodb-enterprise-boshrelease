@@ -1,0 +1,20 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+set -x
+
+# Detect # of CPUs so make jobs can be parallelized
+# Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+export HOME=/var/vcap
+
+## perl
+
+tar xzf perl/perl_5.34.0.orig.tar.xz
+pushd perl-5.34.0
+  ./Configure -des -O -Dprefix=$BOSH_INSTALL_TARGET/perl
+  make
+  make install
+popd
+
+export PERLPROG=$BOSH_INSTALL_TARGET/perl/bin/perl

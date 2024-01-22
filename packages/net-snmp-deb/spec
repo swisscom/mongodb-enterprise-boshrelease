@@ -1,0 +1,11 @@
+---
+name: net-snmp-deb
+dependencies: 
+- perl
+
+files:
+- snmp_5.9.1.deb #http://launchpadlibrarian.net/655410356/snmp_5.9.1+dfsg-1ubuntu2.6_amd64.deb
+- libsnmp40_5.9.1.deb #http://launchpadlibrarian.net/655410355/libsnmp40_5.9.1+dfsg-1ubuntu2.6_amd64.deb
+- libsnmp-base_5.9.1.deb #http://launchpadlibrarian.net/655410341/libsnmp-base_5.9.1+dfsg-1ubuntu2.6_all.deb
+#- snmp-mibs-downloader_1.1.deb
+#- smistrip_0.4.8.deb
