@@ -10,7 +10,7 @@ export HOME=/var/vcap
 
 ## perl
 
-tar xzf perl/perl_5.34.0.orig.tar.xz
+tar xf perl/perl_5.34.0.orig.tar.xz
 pushd perl-5.34.0
   ./Configure -des -O -Dprefix=$BOSH_INSTALL_TARGET/perl
   make
