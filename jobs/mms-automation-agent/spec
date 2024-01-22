@@ -3,6 +3,7 @@ name: mms-automation-agent
 
 packages:
 - ruby
+- net-snmp-deb 
 
 templates:
   bin/mms-automation-agent_ctl: bin/mms-automation-agent_ctl
