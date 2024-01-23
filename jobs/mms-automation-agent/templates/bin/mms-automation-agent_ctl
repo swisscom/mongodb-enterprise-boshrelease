@@ -51,7 +51,7 @@ case $1 in
     chmod 777 /var/vcap/store/mongodb-audit
     chmod 775 /var/log
     
-    #install lib-snmp
+    #install net-snmp packages
     dpkg -i /var/vcap/packages/net-snmp-deb/*.deb
     
     # set job + index as fqdn for ops manager registration
