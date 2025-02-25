@@ -95,6 +95,8 @@ builds:
     version: 1.1.6
   f86b57fe-fb40-4db1-6164-6033c002e7fc:
     version: 1.1.9
+  f887e508-386f-4982-545b-6b68d5b1fb73:
+    version: 1.1.27
   fabc1b77-201e-49d0-876d-f147894ad541:
     version: 1.0.4
 format-version: "2"
