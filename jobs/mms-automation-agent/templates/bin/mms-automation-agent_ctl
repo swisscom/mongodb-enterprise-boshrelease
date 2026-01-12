@@ -13,14 +13,31 @@ case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
+    # Detect MongoDB version from installed binaries directory
+    MONGO_VERSION=""
+    if latest_bin_dir=$(ls -d /var/vcap/store/mongodb-mms-automation/mongodb-linux-* 2>/dev/null | sort -V | tail -1); then
+      MONGO_VERSION=$(basename "$latest_bin_dir" | sed -E 's/.*-([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+    fi
+    # Extract major version (if detection succeeded, MONGO_MAJOR will be set; if not, comparison will treat it as < 8)
+    MONGO_MAJOR=${MONGO_VERSION%%.*}
+
     <% if p('mongodb.tuning') %>
         # mongodb performance recommendations
-        # https://www.mongodb.com/docs/manual/administration/tcmalloc-performance
-        echo always > /sys/kernel/mm/transparent_hugepage/enabled
-        echo defer+madvise > /sys/kernel/mm/transparent_hugepage/defrag
-        echo 0 > /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
-        echo 1 > /proc/sys/vm/overcommit_memory
-        echo 1 > /proc/sys/vm/swappiness
+        # Configure THP based on detected MongoDB version
+        if [ "${MONGO_MAJOR:-0}" -ge 8 ]; then
+          # MongoDB 8.0+ TCMalloc configuration - THP enabled
+          # https://www.mongodb.com/docs/manual/administration/tcmalloc-performance
+          echo always > /sys/kernel/mm/transparent_hugepage/enabled
+          echo defer+madvise > /sys/kernel/mm/transparent_hugepage/defrag
+          echo 0 > /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
+          echo 1 > /proc/sys/vm/overcommit_memory
+          echo 1 > /proc/sys/vm/swappiness
+        else
+          # MongoDB 7.x and earlier - THP disabled
+          echo never > /sys/kernel/mm/transparent_hugepage/enabled
+          echo never > /sys/kernel/mm/transparent_hugepage/defrag
+          echo 0 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+        fi
         ulimit -n 64000
         ulimit -u 64000
         ulimit -f unlimited
