@@ -1,0 +1,33 @@
+name: mongodb-enterprise
+version: 1.1.30
+commit_hash: c1b6309
+uncommitted_changes: true
+jobs:
+- name: mms-automation-agent
+  version: 1fb0291927a4a7d87133002ac934fbfb5e23ef012b0fc0f65714623b7ef25a3b
+  fingerprint: 1fb0291927a4a7d87133002ac934fbfb5e23ef012b0fc0f65714623b7ef25a3b
+  sha1: sha256:b11d52aba6c4c4db2fa7639002581ac5d08730957721e71cf9d769a88b0f0692
+  packages:
+  - ruby
+  - net-snmp-deb
+packages:
+- name: net-snmp-deb
+  version: da0c352033d841d1b045db4bab3f5358dce576e3abf44ec6d652c7a964a133e5
+  fingerprint: da0c352033d841d1b045db4bab3f5358dce576e3abf44ec6d652c7a964a133e5
+  sha1: sha256:9a78650d5fb249a5b70a80a071e93878df7c1a25b1159d4796adae807172051a
+  dependencies:
+  - perl
+- name: perl
+  version: e30b3fc897d367adee9f3415c578d6f8155897f853805115f643504265296e55
+  fingerprint: e30b3fc897d367adee9f3415c578d6f8155897f853805115f643504265296e55
+  sha1: sha256:98357b06ed45508e27c1a401bf7bc138d637bb658319ed375b38e71c1a46f15d
+  dependencies: []
+- name: ruby
+  version: dedd1531a6f28a7cc637f5352e075e190a078603d33eaf77f05c36c2902302ff
+  fingerprint: dedd1531a6f28a7cc637f5352e075e190a078603d33eaf77f05c36c2902302ff
+  sha1: sha256:43da915c9acf41b23d7ddbccc944072e0a66d7df4388194c408b341c8f75aa44
+  dependencies: []
+license:
+  version: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  fingerprint: eefa533b44473426f0d39cb7de4a5de1342863955201ca83ddaefe4a0c96d174
+  sha1: sha256:80ed2a5cdbd861f28ea12269f63e878d4988d4edb244b3a2f7fcab1b0c5715f3
