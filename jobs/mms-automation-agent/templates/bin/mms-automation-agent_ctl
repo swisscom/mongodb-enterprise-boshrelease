@@ -3,11 +3,16 @@
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
-# Setup env vars and folders for the webapp_ctl script
+# Setup env vars and folders for the mms-automation-agent_ctl script
 source /var/vcap/jobs/mms-automation-agent/helpers/ctl_setup.sh 'mms-automation-agent'
 
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
+
+# Disable glibc restartable sequences (rseq) to silence the mongod rseq warning.
+# The automation agent launches mongod as a child process, so it inherits this env var.
+# https://support.mongodb.com/article/000022025
+export GLIBC_TUNABLES=glibc.pthread.rseq=0
 
 case $1 in
 
