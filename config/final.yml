@@ -5,6 +5,15 @@ blobstore:
     bucket_name: mongodb-enterprise-boshrelease
     endpoint: https://6e2b167f9571a3ca404505bac70dd854.ds11s3ns.swisscom.com
     host: 6e2b167f9571a3ca404505bac70dd854.ds11s3ns.swisscom.com
+    # Swisscom ECS at ds11s3 does not support AWS SDK v2's default
+    # CRC32-on-PUT or per-chunk SHA256 streaming signatures, which causes
+    # `bosh upload-blobs` to fail with XAmzContentSHA256Mismatch on multipart
+    # UploadPart. Disable the SDK v2 checksum calculation paths via the
+    # bosh-s3cli config flags (require bosh-s3cli >= v0.0.383).
+    # https://pkg.go.dev/github.com/cloudfoundry/bosh-s3cli/config
+    request_checksum_calculation_enabled: false
+    response_checksum_calculation_enabled: false
+    uploader_request_checksum_calculation_enabled: false
     port: 443
     ssl_verify_peer: false
     credentials_source: static
